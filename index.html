@@ -393,6 +393,7 @@
       <span class="result-label">総デスポ（1バトル）</span>
       <span class="result-value accent" id="r-deathpo">—</span>
     </div>
+    <div id="r-deathpo-note" style="display:none; font-size:12px; color:var(--red); padding: 4px 12px;">※ デスポテーブル上は、これ以上兵士をぶつけても戦功は増えません</div>
     <div class="result-row highlight">
       <span class="result-label">獲得戦功（1バトル）</span>
       <span class="result-value accent" id="r-merit1">—</span>
@@ -507,7 +508,17 @@ function calculate(){
   const ratio=meritTotal/breakeven;
   const healDiff=totalBoost-healNeeded;
 
-  document.getElementById('r-deathpo').textContent=fmt(totalDP)+' pt';
+  const dpEl=document.getElementById('r-deathpo');
+  if(totalDP>=100000000){
+    dpEl.textContent='100,000,000 pt（上限1億カンストのため）';
+    dpEl.className='result-value red';
+    document.getElementById('r-deathpo-note').textContent='※ デスポテーブル上は、これ以上兵士をぶつけても戦功は増えません。兵士数を減らして再試算することをおすすめします。';
+    document.getElementById('r-deathpo-note').style.display='block';
+  } else {
+    dpEl.textContent=fmt(totalDP)+' pt';
+    dpEl.className='result-value accent';
+    document.getElementById('r-deathpo-note').style.display='none';
+  }
   document.getElementById('r-merit1').textContent=fmt(merit1)+' pt';
   document.getElementById('r-merit-total').textContent=fmt(meritTotal)+' pt';
   document.getElementById('r-cost').textContent=fmt(cost)+' ダイヤ';
