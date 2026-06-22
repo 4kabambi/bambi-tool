@@ -296,7 +296,7 @@
   </div>
 
   <div class="field">
-    <label>兵士数</label>
+    <label>兵士数 <span style="color:var(--accent); font-weight:700;">※ 1回あたりの数を入力</span></label>
     <div class="input-row">
       <input type="number" id="soldiers" value="" min="0" placeholder="例: 1000000">
       <span class="unit">体</span>
@@ -418,7 +418,7 @@
     <div class="verdict" id="r-verdict"></div>
     <div class="divider"></div>
     <div class="result-row">
-      <span class="result-label">全員治療に必要なブースト</span>
+      <span class="result-label">全員治療に必要なブースト（参加回数分合計）</span>
       <span class="result-value blue" id="r-heal-need">—</span>
     </div>
     <div class="result-row">
@@ -506,7 +506,8 @@ function calculate(){
   const cost=ENTRY_COST[selectedCount];
   const breakeven=BREAKEVEN[selectedCount];
   const ratio=meritTotal/breakeven;
-  const healDiff=totalBoost-healNeeded;
+  const healNeededTotal=healNeeded*selectedCount;  // 参加回数分の治療ブースト
+  const healDiff=totalBoost-healNeededTotal;
 
   const dpEl=document.getElementById('r-deathpo');
   if(totalDP>=100000000){
@@ -529,7 +530,7 @@ function calculate(){
   vd.textContent=meritTotal>=breakeven?'✅ 黒字':'❌ 赤字';
   vd.className='verdict '+(meritTotal>=breakeven?'ok':'ng');
 
-  document.getElementById('r-heal-need').textContent=healNeeded.toFixed(1)+' 時間';
+  document.getElementById('r-heal-need').textContent=healNeededTotal.toFixed(1)+' 時間'+'（1回あたり '+healNeeded.toFixed(1)+' 時間 × '+selectedCount+'回）';
   document.getElementById('r-heal-have').textContent=fmt(totalBoost)+' 時間';
 
   const de=document.getElementById('r-heal-diff');
